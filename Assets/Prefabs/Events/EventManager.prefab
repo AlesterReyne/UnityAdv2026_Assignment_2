@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 693402539478011658}
   - component: {fileID: 3900119092583663076}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: EventManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,3 +44,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac3331df81079f4aab72a48495f8f74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  onBulletFiredUnityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1051559073492058124, guid: 50b730f7362fdfc4cb5cb827db78a222,
+          type: 3}
+        m_TargetAssemblyTypeName: Events.Bullet, Assembly-CSharp
+        m_MethodName: Start
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onBulletEnteredUnityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1051559073492058124, guid: 50b730f7362fdfc4cb5cb827db78a222,
+          type: 3}
+        m_TargetAssemblyTypeName: Events.Bullet, Assembly-CSharp
+        m_MethodName: OnTriggerEnter
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Collider, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

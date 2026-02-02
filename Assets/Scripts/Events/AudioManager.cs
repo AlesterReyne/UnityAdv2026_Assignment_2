@@ -4,14 +4,16 @@ namespace Events
 {
     public class AudioManager : MonoBehaviour
     {
+        EventsManager eventsManager;
+
         private void Start()
         {
-            EventsManager.BulletFiredAction += PlayFireSound;
+            EventsManager.Instance.BulletFiredAction += PlayFireSound;
         }
 
-        private void PlayFireSound()
+        public void PlayFireSound()
         {
-            Debug.unityLogger.Log("BOOOM!");
+            Debug.unityLogger.Log("C# Action and UnityEvent: BOOOM!");
         }
     }
 }
