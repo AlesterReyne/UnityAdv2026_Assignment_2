@@ -142,25 +142,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onBulletEnteredUnityEvent:
+  onBonusUnityEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 268517340415704821, guid: 1e1daab351f06b04496762689fcfc6fd,
           type: 3}
         m_TargetAssemblyTypeName: Events.Enemy, Assembly-CSharp
-        m_MethodName: EnemyHit
-        m_Mode: 2
+        m_MethodName: DamageHandlerBonus
+        m_Mode: 0
         m_Arguments:
-          m_ObjectArgument: {fileID: 209657563550903065, guid: 1e1daab351f06b04496762689fcfc6fd,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Collider, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   bulletSpeed: 2
-  damage: 2
+  bulletSO: {fileID: 0}
 --- !u!54 &-3500550073720814484
 Rigidbody:
   m_ObjectHideFlags: 0

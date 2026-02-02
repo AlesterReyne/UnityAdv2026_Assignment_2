@@ -1,4 +1,5 @@
 using System;
+using Events.Bonus;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,10 +9,10 @@ namespace Events
     {
         // 2 Unity Event, inspector, 1 with parameter
         [SerializeField] public UnityEvent onBulletFiredUnityEvent;
-        [SerializeField] public UnityEvent<Collider> onBulletEnteredUnityEvent;
 
+        [SerializeField] private BulletSO bulletSO;
         [SerializeField] private float bulletSpeed = 1;
-        [SerializeField] private int damage = 1;
+
 
         public void Start()
         {
@@ -28,11 +29,20 @@ namespace Events
 
         public void OnTriggerEnter(Collider other)
         {
+            BulletEnteredEventArgs args = new BulletEnteredEventArgs
+            {
+                DamageDealt = bulletSO.GetRandomDamage(),
+                Target = other.GetComponent<Enemy>()
+            };
             EventsManager.Instance.OnBulletHitSomething(other);
-            EventsManager.Instance.OnBulletDamaged(other, damage);
-            // Invoke for UnityEvents solution
-            onBulletEnteredUnityEvent?.Invoke(other);
+            EventsManager.Instance.onBonusUnityAction?.Invoke(args);
             Destroy(gameObject);
         }
+    }
+
+    public struct BulletEnteredEventArgs
+    {
+        public int DamageDealt;
+        public Enemy Target;
     }
 }

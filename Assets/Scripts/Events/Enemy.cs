@@ -10,16 +10,16 @@ namespace Events
         private void OnEnable()
         {
             EventsManager.Instance.BulletHitSomethingAction += EnemyHit;
-            EventsManager.Instance.BulletDamagedAction += DamageHandler;
+            EventsManager.Instance.DeathAction += DeathHandler;
         }
 
         private void OnDisable()
         {
             EventsManager.Instance.BulletHitSomethingAction -= EnemyHit;
-            EventsManager.Instance.BulletDamagedAction -= DamageHandler;
+            EventsManager.Instance.DeathAction -= DeathHandler;
         }
 
-        public void EnemyHit(Collider other)
+        private void EnemyHit(Collider other)
         {
             if (other == null) return;
             if (other.gameObject == gameObject)
@@ -28,21 +28,25 @@ namespace Events
             }
         }
 
-        private void DamageHandler(Collider other, int damage)
+        public void DamageHandlerBonus(BulletEnteredEventArgs bulletArgs)
         {
             int previousHealth = health;
-            if (other == null) return;
-            if (other.gameObject == gameObject)
-            {
-                health -= damage;
-                Debug.Log($"C# Action: Health {previousHealth} - {damage} = {health}");
-            }
+            if (bulletArgs.Target == null || !bulletArgs.Target.gameObject == gameObject) return;
+
+            health -= bulletArgs.DamageDealt;
+            Debug.Log($"Bonus class: Health {previousHealth} - {bulletArgs.DamageDealt} = {health}");
+
 
             if (health <= 0)
             {
-                Debug.Log("C# Action: Enemy is dead!");
-                Destroy(gameObject);
+                EventsManager.Instance.OnDeath();
             }
+        }
+
+        private void DeathHandler()
+        {
+            Debug.Log("C# Action: Enemy is dead!");
+            Destroy(gameObject);
         }
     }
 }
