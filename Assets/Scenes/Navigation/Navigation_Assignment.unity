@@ -3549,6 +3549,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  animator: {fileID: 0}
+  upperBodyLayerName: UpperBody
 --- !u!1 &2094038988
 GameObject:
   m_ObjectHideFlags: 0
