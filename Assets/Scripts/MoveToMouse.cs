@@ -15,6 +15,7 @@ public class MoveToMouse : MonoBehaviour
 
     private NavMeshAgent agent;
     private int upperBodyLayerIndex = -1;
+    private bool isPunchingPlaying;
 
     private static readonly int MoveSpeedHash = Animator.StringToHash("MoveSpeed");
     private static readonly int IsWalkingHash = Animator.StringToHash("isWalking");
@@ -59,11 +60,11 @@ public class MoveToMouse : MonoBehaviour
 
         float speed = agent.velocity.magnitude;
 
-        // Bool for transitions
+        // isWalking Parameter
         bool isWalking = speed > 0.1f;
         animator.SetBool(IsWalkingHash, isWalking);
 
-        // Float for blend tree
+        // MoveSpeed Parameter
         float normalized = Mathf.InverseLerp(0f, agent.speed, speed);
         animator.SetFloat(MoveSpeedHash, normalized);
     }
@@ -73,11 +74,36 @@ public class MoveToMouse : MonoBehaviour
         if (animator == null || upperBodyLayerIndex < 0)
             return;
 
-        bool holdingRightClick = Input.GetMouseButton(1);
-
-        animator.SetLayerWeight(upperBodyLayerIndex, holdingRightClick ? 1f : 0f);
-
+        // Start punch
         if (Input.GetMouseButtonDown(1))
+        {
+            animator.SetLayerWeight(upperBodyLayerIndex, 1f);
             animator.SetTrigger(PunchingHash);
+            isPunchingPlaying = true;
+        }
+
+        // If punch is playing, keep layer ON until it ends
+        if (isPunchingPlaying)
+        {
+            AnimatorStateInfo st = animator.GetCurrentAnimatorStateInfo(upperBodyLayerIndex);
+
+            // Make sure the state name matches your punch state's name
+            bool inPunchState = st.IsName("Punch");
+
+            if (inPunchState && st.normalizedTime >= 1f)
+            {
+                isPunchingPlaying = false;
+                animator.SetLayerWeight(upperBodyLayerIndex, 0f);
+            }
+            else
+            {
+                animator.SetLayerWeight(upperBodyLayerIndex, 1f);
+            }
+        }
+        else
+        {
+            // optional: keep it 0 when not punching
+            animator.SetLayerWeight(upperBodyLayerIndex, 0f);
+        }
     }
 }
