@@ -17,9 +17,11 @@ public class MoveToMouse : MonoBehaviour
     private int upperBodyLayerIndex = -1;
     private bool isPunchingPlaying;
 
+    #region << Animator Paramaters >>
     private static readonly int MoveSpeedHash = Animator.StringToHash("MoveSpeed");
     private static readonly int IsWalkingHash = Animator.StringToHash("isWalking");
     private static readonly int PunchingHash = Animator.StringToHash("Punching");
+    #endregion
 
     private void Start()
     {
@@ -42,20 +44,23 @@ public class MoveToMouse : MonoBehaviour
 
     private void MoveToMouseHandler()
     {
+        // Left mouse button to move
         if (!Input.GetMouseButton(0))
             return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer)) 
         {
             if (NavMesh.SamplePosition(hit.point, out NavMeshHit navHit, sampleDistance, NavMesh.AllAreas))
                 agent.SetDestination(navHit.position);
         }
     }
 
+
     private void UpdateLocomotion()
     {
+        // Update animator parameters based on agent velocity
         if (animator == null) return;
 
         float speed = agent.velocity.magnitude;
@@ -74,7 +79,7 @@ public class MoveToMouse : MonoBehaviour
         if (animator == null || upperBodyLayerIndex < 0)
             return;
 
-        // Start punch
+        // Right click to initiate a punch
         if (Input.GetMouseButtonDown(1))
         {
             animator.SetLayerWeight(upperBodyLayerIndex, 1f);
@@ -82,12 +87,11 @@ public class MoveToMouse : MonoBehaviour
             isPunchingPlaying = true;
         }
 
-        // If punch is playing, keep layer ON until it ends
+        // To avoid cutting off the punch animation, we check if it's still playing
         if (isPunchingPlaying)
         {
             AnimatorStateInfo st = animator.GetCurrentAnimatorStateInfo(upperBodyLayerIndex);
 
-            // Make sure the state name matches your punch state's name
             bool inPunchState = st.IsName("Punch");
 
             if (inPunchState && st.normalizedTime >= 1f)
@@ -102,7 +106,7 @@ public class MoveToMouse : MonoBehaviour
         }
         else
         {
-            // optional: keep it 0 when not punching
+            // keep it disabled when not punching
             animator.SetLayerWeight(upperBodyLayerIndex, 0f);
         }
     }

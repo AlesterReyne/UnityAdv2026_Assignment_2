@@ -2,18 +2,17 @@ using UnityEngine;
 
 public class ToggleEffectSMB : StateMachineBehaviour
 {
-    [Tooltip("Child object name under the Animator root (or its children).")]
     public string effectObjectName = "PunchVFX";
 
     private GameObject fx;
 
+    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (fx == null)
         {
             Transform t = animator.transform.Find(effectObjectName);
 
-            // If not found as direct child, search deeper
             if (t == null)
             {
                 foreach (Transform child in animator.GetComponentsInChildren<Transform>(true))
@@ -33,6 +32,7 @@ public class ToggleEffectSMB : StateMachineBehaviour
             fx.SetActive(true);
     }
 
+    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (fx != null)
